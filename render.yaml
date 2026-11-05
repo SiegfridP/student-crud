@@ -3,7 +3,6 @@ services:
   - type: web
     name: student-crud-backend
     runtime: docker
-    plan: free
     dockerfilePath: ./student/Dockerfile
     dockerContext: ./student
     envVars:
@@ -46,5 +45,4 @@ services:
 
 databases:
   - name: student-crud-db
-    plan: free
     databaseName: db_student
