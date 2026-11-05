@@ -2,8 +2,8 @@
  * Student API client
  *
  * Maps to the Spring Boot backend at /pineda/students.
- * Vite's dev server proxies /pineda/students -> http://localhost:8080,
- * so all calls use a relative path and avoid CORS issues in development.
+ * In development, Vite dev server proxies /pineda/students -> http://localhost:8080.
+ * In production (Render), VITE_API_BASE_URL points to the deployed backend.
  *
  * Backend contract (Student entity):
  *   id (Integer), firstname (String), lastname (String), course (String), section (String)
@@ -16,7 +16,10 @@
  *   DELETE /pineda/students/:id      -> 200 + "Student with id N deleted." | 404 + "Student with id N not found."
  */
 
-const BASE_PATH = '/pineda/students';
+// Vite inlines import.meta.env.* at build time. In dev, VITE_API_BASE_URL is undefined,
+// so we fall back to a relative path that the Vite dev proxy handles.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const BASE_PATH = `${API_BASE_URL}/pineda/students`;
 
 /**
  * Normalize an HTTP response error into a consistent rejection.
