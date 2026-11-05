@@ -2,7 +2,7 @@ services:
   # ── Backend (Spring Boot via Docker) ─────────────────────────────────────────
   - type: web
     name: student-crud-backend
-    env: docker
+    runtime: docker
     plan: free
     dockerfilePath: ./student/Dockerfile
     dockerContext: ./student
@@ -37,8 +37,7 @@ services:
   # ── Frontend (Vite + React Static Site) ──────────────────────────────────────
   - type: web
     name: student-crud-frontend
-    env: static
-    plan: free
+    runtime: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     routes:
