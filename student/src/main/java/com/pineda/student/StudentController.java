@@ -92,4 +92,10 @@ public class StudentController {
         return ResponseEntity.status(404).body("Student with id " + id + " not found.");
     }
 
+    @GetMapping("/")
+    @ResponseBody
+    public String root() {
+        return "Student CRUD API is running. Base path: /pineda/students";
+    }
+
 }
