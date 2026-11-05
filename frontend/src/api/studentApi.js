@@ -19,7 +19,7 @@
 // Vite inlines import.meta.env.* at build time. In dev, VITE_API_BASE_URL is undefined,
 // so we fall back to a relative path that the Vite dev proxy handles.
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ??
+  import.meta.env.VITE_API_BASE_URL ||
   (import.meta.env.DEV ? '' : 'https://student-crud-backend.onrender.com');
 const BASE_PATH = `${API_BASE_URL}/pineda/students`;
 
