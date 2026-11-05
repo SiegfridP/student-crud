@@ -29,17 +29,29 @@ const BASE_PATH = `${API_BASE_URL}/pineda/students`;
  */
 const throwIfNotOk = async (response) => {
   if (!response.ok) {
+    const contentType = response.headers.get('content-type') || '';
     let message = `Request failed with status ${response.status}`;
 
-    try {
-      // Some endpoints (GET /{id}, PUT, DELETE) return a plain text body on 404.
-      const text = await response.text();
-      if (text) {
-        message = text;
+    if (contentType.includes('application/json')) {
+      try {
+        const data = await response.json();
+        message = data.message || data.error || message;
+      } catch {
+        // ignore: could not parse JSON body
       }
-    } catch {
-      // ignore: nothing useful in the body
+    } else if (!contentType.includes('text/html')) {
+      // Some endpoints (GET /{id}, PUT, DELETE) return a plain text body on 404.
+      try {
+        const text = await response.text();
+        if (text) {
+          message = text;
+        }
+      } catch {
+        // ignore: nothing useful in the body
+      }
     }
+    // If content-type is text/html (e.g., Vite dev server 404 page when backend is down),
+    // keep the generic status message instead of dumping raw HTML into the UI.
 
     throw {
       status: response.status,
