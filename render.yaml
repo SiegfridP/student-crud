@@ -41,7 +41,7 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_BASE_URL
-        value: https://student-crud-backend.onrender.com
+        value: https://student-crud-backend-4ivq.onrender.com
 
 databases:
   - name: student-crud-db
