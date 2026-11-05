@@ -1,0 +1,55 @@
+services:
+  # ── Backend (Spring Boot via Docker) ─────────────────────────────────────────
+  - type: web
+    name: student-crud-backend
+    env: docker
+    plan: free
+    dockerfilePath: ./student/Dockerfile
+    dockerContext: ./student
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: student-crud-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: student-crud-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: student-crud-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: student-crud-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: student-crud-db
+          property: password
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: student-crud-db
+          property: databaseUrl
+      - key: SERVER_PORT
+        value: "8080"
+
+  # ── Frontend (Vite + React Static Site) ──────────────────────────────────────
+  - type: web
+    name: student-crud-frontend
+    env: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://student-crud-backend.onrender.com
+
+databases:
+  - name: student-crud-db
+    plan: free
+    databaseName: db_student

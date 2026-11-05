@@ -1,0 +1,18 @@
+# FASTMOLE
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# Editor directories
+.idea/
+.vscode/
+.DS_Store
